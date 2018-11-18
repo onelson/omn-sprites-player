@@ -1,3 +1,6 @@
 /target
 **/*.rs.bk
 *.qmlc
+/src/interface.rs
+/Bindings.cpp
+/Bindings.h
