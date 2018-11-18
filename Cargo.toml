@@ -1,0 +1,11 @@
+[package]
+name = "omn-sprite-viewer"
+version = "0.1.0"
+build = "build.rs"
+links = "qt_quick_cargo"
+
+[dependencies]
+libc = "*"
+
+[build-dependencies]
+rust_qt_binding_generator = "~0.2.0"
