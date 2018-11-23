@@ -1,26 +1,38 @@
 use interface::*;
 
-pub struct Simple {
-    emit: SimpleEmitter,
-    message: String,
+pub struct Store {
+    emit: StoreEmitter,
+    data_path: Option<String>,
+    image_path: Option<String>,
 }
 
-impl SimpleTrait for Simple {
-    fn new(emit: SimpleEmitter) -> Simple {
-        Simple {
-            emit: emit,
-            message: String::new(),
+impl StoreTrait for Store {
+    fn new(emit: StoreEmitter) -> Store {
+        Store {
+            emit,
+            data_path: None,
+            image_path: None,
         }
     }
-    fn emit(&mut self) -> &mut SimpleEmitter {
+    fn emit(&mut self) -> &mut StoreEmitter {
         &mut self.emit
     }
-    fn message(&self) -> &str {
-        "Hello World!" 
+    fn guess_image_path(&self, data_path: String) -> bool {
+        unimplemented!();
     }
-    fn set_message(&mut self, value: String) {
-        self.message = value;
-        self.emit.message_changed();
+
+    fn data_path(&self) -> Option<&str> {
+        match self.data_path.as_ref() {
+            Some(s) => Some(s.as_str()),
+            _ => None
+        }
+    }
+
+    fn image_path(&self) -> Option<&str> {
+        match self.image_path.as_ref() {
+            Some(s) => Some(s.as_str()),
+            _ => None
+        }
     }
 }
 

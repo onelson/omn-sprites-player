@@ -1,4 +1,6 @@
 extern crate libc;
+extern crate omn_sprites;
+extern crate serde_json;
 
 mod implementation;
 pub mod interface {

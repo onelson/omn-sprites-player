@@ -6,6 +6,9 @@ links = "qt_quick_cargo"
 
 [dependencies]
 libc = "*"
+omn-sprites = "0.1.0"
+lazy_static = "1.2.0"
+serde_json = "1.0.33"
 
 [build-dependencies]
 rust_qt_binding_generator = "~0.2.0"

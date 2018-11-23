@@ -6,13 +6,29 @@
         "implementationModule": "implementation"
     },
     "objects": {
-        "Simple": {
+        "Store": {
             "type": "Object",
             "properties": {
-                "message": {
+                "dataPath": {
                     "type": "QString",
-                    "write": true
+                    "optional": true
+                },
+                "imagePath": {
+                    "type": "QString",
+                    "optional": true
                 }
+            },
+            "functions": {
+              "guessImagePath": {
+                "return": "bool",
+                "mut": false,
+                "arguments": [
+                    {
+                        "name": "data_path",
+                        "type": "QString"
+                    }
+                ]
+              }
             }
         }
     }
