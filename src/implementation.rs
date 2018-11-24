@@ -17,22 +17,28 @@ impl StoreTrait for Store {
     fn emit(&mut self) -> &mut StoreEmitter {
         &mut self.emit
     }
-    fn guess_image_path(&self, data_path: String) -> bool {
-        unimplemented!();
+
+    fn guess_image_path(&self, uri: String) -> bool {
+        match ::fs::guess_image_path(&uri) {
+            Ok(_) => true,
+            Err(e) => {
+                error!("{:?}", e);
+                false
+            }
+        }
     }
 
     fn data_path(&self) -> Option<&str> {
         match self.data_path.as_ref() {
             Some(s) => Some(s.as_str()),
-            _ => None
+            _ => None,
         }
     }
 
     fn image_path(&self) -> Option<&str> {
         match self.image_path.as_ref() {
             Some(s) => Some(s.as_str()),
-            _ => None
+            _ => None,
         }
     }
 }
-
