@@ -4,17 +4,32 @@ use std::fs::File;
 use std::path::PathBuf;
 use url::Url;
 
-fn strip_protocol(uri: &str) -> Result<String, Error> {
+
+#[cfg(not(windows))]
+fn normalize(path: &str) -> PathBuf {
+    let mut pb = PathBuf::from("/");
+    for segment in path.split("/") {
+        pb.push(segment);
+    }
+    pb
+}
+
+#[cfg(windows)]
+fn normalize(path: &str) -> PathBuf {
+    path.skip(1).split("/").collect()
+}
+
+fn qt_file_uri_to_path_buf(uri: &str) -> Result<PathBuf, Error> {
     debug!("parsing uri: `{}`", &uri);
     let parsed = Url::parse(&uri)?;
-    let path = parsed.path();
-    debug!("stripped protocol: `{}`", path);
-    Ok(path.to_owned())
+    let pb = normalize(&parsed.path());
+    debug!("stripped protocol: `{}`", pb.display());
+    Ok(pb)
 }
 
 pub fn guess_image_path(uri: &str) -> Result<PathBuf, Error> {
-    let fp = strip_protocol(&uri)?;
-    debug!("reading file: `{}`", &fp);
+    let fp = qt_file_uri_to_path_buf(&uri)?;
+    debug!("reading file: `{}`", fp.display());
 
     let fh = File::open(&fp).unwrap();
     let val: Value = serde_json::from_reader(fh)?;
@@ -32,4 +47,27 @@ pub fn guess_image_path(uri: &str) -> Result<PathBuf, Error> {
         "Unable to guess location of image file: `{:?}`",
         image_path
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[cfg(not(windows))]
+    #[test]
+    fn test_strip_file_proto() {
+        assert_eq!(
+            PathBuf::from("/home/jdoe/file.txt"),
+            qt_file_uri_to_path_buf("file:///home/jdoe/file.txt").unwrap()
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn test_strip_file_proto() {
+        assert_eq!(
+            PathBuf::from("C:\\Users\\jdoe\\file.txt"),
+            qt_file_uri_to_path_buf("file:///C:/Users/jdoe/file.txt").unwrap()
+        );
+    }
 }

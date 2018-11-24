@@ -8,7 +8,7 @@ extern crate url;
 #[macro_use]
 extern crate failure;
 
-pub(crate) mod fs;
+mod fs;
 mod implementation;
 pub mod interface {
     include!(concat!(env!("OUT_DIR"), "/src/interface.rs"));
