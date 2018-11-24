@@ -6,9 +6,12 @@ extern crate log;
 extern crate simple_logger;
 #[macro_use]
 extern crate failure;
+#[macro_use]
+extern crate lazy_static;
 
 mod fs;
 mod implementation;
+mod store;
 pub mod interface {
     include!(concat!(env!("OUT_DIR"), "/src/interface.rs"));
 }

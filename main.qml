@@ -10,7 +10,7 @@ ApplicationWindow {
     width: 640
     height: 480
     title: "Spritesheet Viewer"
-    Store {
+    StoreWrapper {
         id: store
     }
     menuBar: MenuBar {
@@ -48,8 +48,7 @@ ApplicationWindow {
         selectFolder: false
         onAccepted: {
             console.log("You chose: " + fileDialog.fileUrls)
-
-            store.guessImagePath(fileDialog.fileUrls);
+            store.sheetPath = fileDialog.fileUrls.toString();
         }
         onRejected: {
             console.log("Canceled")

@@ -8,7 +8,7 @@ static PROTOCOL_PREFIX: &'static str = "file://";
 #[cfg(windows)]
 static PROTOCOL_PREFIX: &'static str = "file:///";
 
-fn qt_file_uri_to_path_buf(uri: &str) -> PathBuf {
+pub fn qt_file_uri_to_path_buf(uri: &str) -> PathBuf {
     let pb = PathBuf::from(uri.replace(PROTOCOL_PREFIX, ""));
     debug!("stripped protocol: `{}`", pb.display());
     pb

@@ -6,29 +6,21 @@
         "implementationModule": "implementation"
     },
     "objects": {
-        "Store": {
+        "StoreWrapper": {
             "type": "Object",
             "properties": {
-                "dataPath": {
+                "sheetPath": {
                     "type": "QString",
-                    "optional": true
+                    "optional": true,
+                    "write": true
                 },
                 "imagePath": {
                     "type": "QString",
-                    "optional": true
+                    "optional": true,
+                    "write": true
                 }
             },
             "functions": {
-              "guessImagePath": {
-                "return": "bool",
-                "mut": false,
-                "arguments": [
-                    {
-                        "name": "data_path",
-                        "type": "QString"
-                    }
-                ]
-              }
             }
         }
     }
