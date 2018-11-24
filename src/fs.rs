@@ -2,7 +2,6 @@ use failure::Error;
 use serde_json::{self, Value};
 use std::fs::File;
 use std::path::PathBuf;
-use url::Url;
 
 
 #[cfg(not(windows))]
@@ -27,9 +26,7 @@ fn normalize(path: &str) -> PathBuf {
 }
 
 fn qt_file_uri_to_path_buf(uri: &str) -> Result<PathBuf, Error> {
-    debug!("parsing uri: `{}`", &uri);
-    let parsed = Url::parse(&uri)?;
-    let pb = normalize(&parsed.path());
+    let pb = normalize(&uri.replace("file://", ""));
     debug!("stripped protocol: `{}`", pb.display());
     Ok(pb)
 }
@@ -62,7 +59,7 @@ mod tests {
 
     #[cfg(not(windows))]
     #[test]
-    fn test_strip_file_proto() {
+    fn test_convert_qt_uri() {
         assert_eq!(
             PathBuf::from("/home/jdoe/file.txt"),
             qt_file_uri_to_path_buf("file:///home/jdoe/file.txt").unwrap()
@@ -71,7 +68,7 @@ mod tests {
 
     #[cfg(windows)]
     #[test]
-    fn test_strip_file_proto() {
+    fn test_convert_qt_uri() {
         assert_eq!(
             PathBuf::from("C:\\Users\\jdoe\\file.txt"),
             qt_file_uri_to_path_buf("file:///C:/Users/jdoe/file.txt").unwrap()
