@@ -7,16 +7,23 @@ use url::Url;
 
 #[cfg(not(windows))]
 fn normalize(path: &str) -> PathBuf {
-    let mut pb = PathBuf::from("/");
-    for segment in path.split("/") {
-        pb.push(segment);
-    }
-    pb
+    PathBuf::from(path)
 }
 
 #[cfg(windows)]
 fn normalize(path: &str) -> PathBuf {
-    path.skip(1).split("/").collect()
+    // Windows is odd. The uri comes in as like `/C:/foo/bar/...` after we
+    // chop off the file protocol scheme from the front.
+
+    // Slice [1..2] should be the drive letter. Pull it out...
+    let drive = &path[1..2];
+    let mut buf = PathBuf::from(&format!(r"{}:\", drive));
+    // ... then after the drive letter, push in each path segment after the
+    // drive letter.
+    for segment in path[4..].split("/") {
+        buf.push(segment);
+    }
+    buf
 }
 
 fn qt_file_uri_to_path_buf(uri: &str) -> Result<PathBuf, Error> {

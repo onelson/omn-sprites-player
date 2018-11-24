@@ -4,3 +4,5 @@
 /src/interface.rs
 /Bindings.cpp
 /Bindings.h
+/.idea
+*~
