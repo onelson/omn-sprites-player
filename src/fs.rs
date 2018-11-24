@@ -3,36 +3,19 @@ use serde_json::{self, Value};
 use std::fs::File;
 use std::path::PathBuf;
 
-
 #[cfg(not(windows))]
-fn normalize(path: &str) -> PathBuf {
-    PathBuf::from(path)
-}
-
+static PROTOCOL_PREFIX: &'static str = "file://";
 #[cfg(windows)]
-fn normalize(path: &str) -> PathBuf {
-    // Windows is odd. The uri comes in as like `/C:/foo/bar/...` after we
-    // chop off the file protocol scheme from the front.
+static PROTOCOL_PREFIX: &'static str = "file:///";
 
-    // Slice [1..2] should be the drive letter. Pull it out...
-    let drive = &path[1..2];
-    let mut buf = PathBuf::from(&format!(r"{}:\", drive));
-    // ... then after the drive letter, push in each path segment after the
-    // drive letter.
-    for segment in path[4..].split("/") {
-        buf.push(segment);
-    }
-    buf
-}
-
-fn qt_file_uri_to_path_buf(uri: &str) -> Result<PathBuf, Error> {
-    let pb = normalize(&uri.replace("file://", ""));
+fn qt_file_uri_to_path_buf(uri: &str) -> PathBuf {
+    let pb = PathBuf::from(uri.replace(PROTOCOL_PREFIX, ""));
     debug!("stripped protocol: `{}`", pb.display());
-    Ok(pb)
+    pb
 }
 
 pub fn guess_image_path(uri: &str) -> Result<PathBuf, Error> {
-    let fp = qt_file_uri_to_path_buf(&uri)?;
+    let fp = qt_file_uri_to_path_buf(&uri);
     debug!("reading file: `{}`", fp.display());
 
     let fh = File::open(&fp).unwrap();
@@ -62,7 +45,7 @@ mod tests {
     fn test_convert_qt_uri() {
         assert_eq!(
             PathBuf::from("/home/jdoe/file.txt"),
-            qt_file_uri_to_path_buf("file:///home/jdoe/file.txt").unwrap()
+            qt_file_uri_to_path_buf("file:///home/jdoe/file.txt")
         );
     }
 
@@ -70,8 +53,8 @@ mod tests {
     #[test]
     fn test_convert_qt_uri() {
         assert_eq!(
-            PathBuf::from("C:\\Users\\jdoe\\file.txt"),
-            qt_file_uri_to_path_buf("file:///C:/Users/jdoe/file.txt").unwrap()
+            PathBuf::from("C:/Users/jdoe/file.txt"),
+            qt_file_uri_to_path_buf("file:///C:/Users/jdoe/file.txt")
         );
     }
 }
