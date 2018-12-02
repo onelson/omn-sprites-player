@@ -1,6 +1,6 @@
-<RCC>
+<!DOCTYPE RCC>
+<RCC version="1.0">
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
+        <file>view/main.qml</file>
     </qresource>
 </RCC>

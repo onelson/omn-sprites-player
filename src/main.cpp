@@ -17,11 +17,7 @@ int main_cpp(const char* appPath)
     qmlRegisterType<StoreWrapper>("RustCode", 1, 0, "StoreWrapper");
 
     QQmlApplicationEngine engine;
-    if (QFile("main.qml").exists()) {
-        engine.load(QUrl(QStringLiteral("main.qml")));
-    } else {
-        engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-    }
+    engine.load(QUrl(QStringLiteral("qrc:/view/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 
