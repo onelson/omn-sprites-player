@@ -1,7 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.0
 import RustCode 1.0
 
@@ -12,6 +11,24 @@ ApplicationWindow {
     title: "Spritesheet Viewer"
     StoreWrapper {
         id: store
+    }
+
+    FilePicker {
+        id: sheetPicker
+        nameFilters: [ "JSON files (*.json)", "All files (*)" ]
+        onAccepted: {
+            console.log("You chose: " + sheetPicker.fileUrls);
+            store.sheetPath = sheetPicker.fileUrls.toString();
+        }
+    }
+
+    FilePicker {
+        id: atlasPicker
+        nameFilters: [ "PNG files (*.png)", "All files (*)" ]
+        onAccepted: {
+            console.log("You chose: " + atlasPicker.fileUrls);
+            store.imagePath = atlasPicker.fileUrls.toString();
+        }
     }
 
     SplitView {
@@ -43,18 +60,27 @@ ApplicationWindow {
                 }
                 TextField {
                     readOnly: true
+                    text: store.sheetPath
                 }
+
                 Button {
                     text: "Browse"
+                    onClicked: {
+                        sheetPicker.open();
+                    }
                 }
                 Label {
                     text: "Atlas"
                 }
                 TextField {
                     readOnly: true
+                    text: store.imagePath
                 }
                 Button {
                     text: "Browse"
+                    onClicked: {
+                        atlasPicker.open();
+                    }
                 }
             }
 
