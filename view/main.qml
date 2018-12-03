@@ -40,11 +40,27 @@ ApplicationWindow {
             width: 400
             Layout.minimumWidth: 100
             Layout.fillWidth: true
+            color: "darkgrey"
 
-            color: "lightblue"
-            Text {
-                text: "View 1"
-                anchors.centerIn: parent
+            ScrollView {
+                flickableItem.boundsMovement: Flickable.DragOverBounds
+                flickableItem.interactive: true
+                flickableItem.contentHeight: img.height * img.scale
+                flickableItem.contentWidth: img.width * img.scale
+                anchors.fill: parent
+                Image {
+                    id: img
+                    source: "file://" + store.imagePath.toString()
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                scrollGestureEnabled: false
+
+                onWheel: {
+                    img.scale += img.scale * wheel.angleDelta.y / 120 / 10;
+                }
             }
         }
 
