@@ -1,8 +1,11 @@
-use fs;
-use interface::*;
 use serde_json::Value;
 use std::fs::File;
-use store::Store;
+
+use crate::{
+    fs,
+    interface::*,
+    store::Store
+};
 
 pub struct StoreWrapper {
     emit: StoreWrapperEmitter,

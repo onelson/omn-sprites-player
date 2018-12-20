@@ -1,9 +1,6 @@
-extern crate libc;
-extern crate omn_sprites;
-extern crate serde_json;
+
 #[macro_use]
 extern crate log;
-extern crate simple_logger;
 #[macro_use]
 extern crate failure;
 #[macro_use]
