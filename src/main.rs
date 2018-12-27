@@ -17,7 +17,7 @@ extern "C" {
 }
 
 fn main() {
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
+    simple_logger::init_with_level(log::Level::Info).unwrap();
 
     use std::ffi::CString;
     let app_name = std::env::args().next().unwrap();

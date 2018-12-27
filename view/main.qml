@@ -4,14 +4,14 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
 import RustCode 1.0
 
+
 ApplicationWindow {
     visible: true
     width: 640
     height: 480
     title: "Spritesheet Viewer"
-    StoreWrapper {
-        id: store
-    }
+
+    StoreWrapper { id: store }
 
     FilePicker {
         id: sheetPicker
@@ -42,41 +42,33 @@ ApplicationWindow {
             Layout.fillWidth: true
             color: "darkgrey"
 
-            ScrollView {
-                flickableItem.boundsMovement: Flickable.DragOverBounds
-                flickableItem.interactive: true
-                flickableItem.contentHeight: img.height * img.scale
-                flickableItem.contentWidth: img.width * img.scale
-                anchors.fill: parent
-                Image {
-                    id: img
-                    source: "file://" + store.imagePath.toString()
-                }
-            }
-
             MouseArea {
-                anchors.fill: parent
                 scrollGestureEnabled: false
-
+                anchors.fill: parent
                 onWheel: {
                     img.scale += img.scale * wheel.angleDelta.y / 120 / 10;
                 }
+            }
+
+            Image {
+                id: img
+                source: "file://" + store.imagePath.toString()
+                anchors.centerIn: parent
             }
         }
 
         Rectangle {
             id: sideBar
-            width: 240
+            width: 300
             Layout.minimumWidth: 50
             color: "lightgray"
 
             Column {
-                Label {
-                    text: "Sheet Data"
-                }
+                Label { text: "Sheet Data" }
                 TextField {
                     readOnly: true
                     text: store.sheetPath
+                    width: sideBar.width
                 }
 
                 Button {
@@ -85,12 +77,11 @@ ApplicationWindow {
                         sheetPicker.open();
                     }
                 }
-                Label {
-                    text: "Atlas"
-                }
+                Label { text: "Atlas" }
                 TextField {
                     readOnly: true
                     text: store.imagePath
+                    width: sideBar.width
                 }
                 Button {
                     text: "Browse"
@@ -99,7 +90,6 @@ ApplicationWindow {
                     }
                 }
             }
-
         }
     }
 }
