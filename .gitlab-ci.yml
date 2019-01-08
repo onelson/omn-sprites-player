@@ -1,6 +1,11 @@
 build:
   tags:
   - windows
+
+  environment:
+      Qt5_DIR: "C:\Qt\5.10.1\msvc2017_64"
+      PATH: "%Qt5_DIR%\bin;%PATH%"
+
   before_script:
   - CALL "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x64
   script:
